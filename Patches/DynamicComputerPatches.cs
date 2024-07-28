@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace ConputerSound.Patches
+namespace ComputerSound.Patches
 {
     [HarmonyPatch(typeof(GorillaComputerTerminal))]
     [HarmonyPatch("Init", MethodType.Normal)]
@@ -12,8 +12,12 @@ namespace ConputerSound.Patches
     {
         private static void Postfix(GorillaComputerTerminal __instance)
         {
-           Plugin.ComputerSources.Add(__instance.gameObject.AddComponent<AudioSource>());
-
+            AudioSource auds = __instance.gameObject.AddComponent<AudioSource>();
+            auds.volume = Plugin.FanVol.Value;
+            auds.maxDistance = 0.2f;
+            auds.clip = Plugin.FanSound;
+            auds.loop = true;
+            auds.Play();
         }
     }
     [HarmonyPatch(typeof(GorillaComputerTerminal))]

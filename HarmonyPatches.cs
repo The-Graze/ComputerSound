@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace ConputerSound
+namespace ComputerSound
 {
     /// <summary>
     /// This class handles applying harmony patches to the game.

@@ -9,36 +9,25 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Utilla;
 
-namespace ConputerSound
+namespace ComputerSound
 {
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class Plugin : BaseUnityPlugin
     {
         Plugin() => StartUp();
 
-        ConfigEntry<float> FanVol;
+        public static ConfigEntry<float> FanVol;
 
         public static AudioClip FanSound;
-
-        string audioPath;
         void StartUp()
         {
-            
             HarmonyPatches.ApplyHarmonyPatches();
-            FanVol = Config.Bind("Settings", "Volume", 0.2f, "Computer fan Volume");
-            audioPath = Paths.PluginPath + "/computer.ogg";
-            if (File.Exists(audioPath)) 
-            {
-                FanSound = AudioClip.Create(audioPath);
-            }
-            else
-            {
-
-            }
+            FanVol = Config.Bind("Settings", "Volume", 0.02f, "Computer fan Volume");
+            StartCoroutine(GetAudioClip());
         }
         IEnumerator GetAudioClip()
         {
-            using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("https://www.my-server.com/audio.ogg", AudioType.OGGVORBIS))
+            using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip("https://github.com/The-Graze/ComputerSound/raw/master/computer.ogg", AudioType.OGGVORBIS))
             {
                 yield return www.SendWebRequest();
 
